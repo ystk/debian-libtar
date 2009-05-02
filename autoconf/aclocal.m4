@@ -1,7 +1,3 @@
-m4_include([encap.m4])
-m4_include([ac_path_generic.m4])
-
-
 # PSG_LIB_READLINE
 # ----------------
 # Check for GNU readline library.
