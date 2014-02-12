@@ -1,6 +1,6 @@
 dnl ### Normal initialization. ######################################
-AC_INIT([libtar], [1.2.11])
-AC_PREREQ([2.57])
+AC_INIT([libtar], [1.2.16])
+AC_PREREQ([2.61])
 AC_CONFIG_AUX_DIR([autoconf])
 AC_CONFIG_HEADERS([config.h])
 AC_COPYRIGHT([[
@@ -9,6 +9,8 @@ Copyright (c) 1998-2003 Mark D. Roth
 All rights reserved.
 ]])
 AC_CONFIG_SRCDIR([lib/libtar.h])
+AC_CONFIG_MACRO_DIR([autoconf])
+AM_INIT_AUTOMAKE([dist-bzip2])
 ENCAP_PKG([], [postinstall-encap])
 
 
@@ -26,15 +28,15 @@ AC_SUBST([MKDIR])
 
 
 dnl ### Check for compiler et al. ###################################
+AC_USE_SYSTEM_EXTENSIONS
 AC_PROG_CC
-AC_PROG_RANLIB
+AC_PROG_LIBTOOL
 AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
 
 
 dnl ### Compiler characteristics. ##################################
-AC_AIX
 AC_C_CONST
 
 
