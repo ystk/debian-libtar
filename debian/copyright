@@ -1,13 +1,15 @@
 This package was debianized by Glenn McGrath <bug1@debian.org> on
 Sat,  5 Jan 2002 13:24:37 +1100.
 
-It was downloaded from http://www-dev.cites.uiuc.edu/libtar/ 
+It was downloaded from http://repo.or.cz/w/libtar.git; previously from
+http://www.feep.net/libtar/
 
-Upstream Author:  Mark D. Roth <roth@uiuc.edu>
+Upstream Authors: Mark D. Roth <roth@uiuc.edu> and Chris Frey
+<cdfrey@foursquare.net>
 
 Copyright:
-Copyright (c) 1998-2002  University of Illinois Board of Trustees
-Copyright (c) 1998-2002  Mark D. Roth
+Copyright (c) 1998-2003  University of Illinois Board of Trustees
+Copyright (c) 1998-2003  Mark D. Roth
 All rights reserved.
 
 Developed by: Campus Information Technologies and Educational Services,
@@ -40,5 +42,4 @@ IN NO EVENT SHALL THE CONTRIBUTORS OR COPYRIGHT HOLDERS BE LIABLE FOR
 ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
 OR THE USE OR OTHER DEALINGS WITH THE SOFTWARE.
-
 

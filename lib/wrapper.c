@@ -44,7 +44,7 @@ tar_extract_glob(TAR *t, char *globname, char *prefix)
 			snprintf(buf, sizeof(buf), "%s/%s", prefix, filename);
 		else
 			strlcpy(buf, filename, sizeof(buf));
-		if (tar_extract_file(t, filename) != 0)
+		if (tar_extract_file(t, buf) != 0)
 			return -1;
 	}
 
@@ -76,7 +76,6 @@ tar_extract_all(TAR *t, char *prefix)
 			snprintf(buf, sizeof(buf), "%s/%s", prefix, filename);
 		else
 			strlcpy(buf, filename, sizeof(buf));
-		free(filename);
 #ifdef DEBUG
 		printf("    tar_extract_all(): calling tar_extract_file(t, "
 		       "\"%s\")\n", buf);

@@ -13,6 +13,7 @@
 #include <internal.h>
 
 #include <stdio.h>
+#include <string.h>
 #include <sys/param.h>
 #include <sys/types.h>
 #include <fcntl.h>
@@ -21,20 +22,11 @@
 
 #ifdef STDC_HEADERS
 # include <stdlib.h>
-# include <string.h>
 #endif
 
 #ifdef HAVE_UNISTD_H
 # include <unistd.h>
 #endif
-
-
-struct linkname
-{
-	char ln_save[MAXPATHLEN];
-	char ln_real[MAXPATHLEN];
-};
-typedef struct linkname linkname_t;
 
 
 static int
@@ -99,8 +91,9 @@ int
 tar_extract_file(TAR *t, char *realname)
 {
 	int i;
-	linkname_t *lnp;
-	char *pathname;
+	char *lnp;
+	int pathname_len;
+	int realname_len;
 
 	if (t->options & TAR_NOOVERWRITE)
 	{
@@ -139,17 +132,17 @@ tar_extract_file(TAR *t, char *realname)
 	if (i != 0)
 		return i;
 
-	lnp = (linkname_t *)calloc(1, sizeof(linkname_t));
+	pathname_len = strlen(th_get_pathname(t)) + 1;
+	realname_len = strlen(realname) + 1;
+	lnp = (char *)calloc(1, pathname_len + realname_len);
 	if (lnp == NULL)
 		return -1;
-	pathname = th_get_pathname(t);
-	strlcpy(lnp->ln_save, pathname, sizeof(lnp->ln_save));
-	strlcpy(lnp->ln_real, realname, sizeof(lnp->ln_real));
+	strcpy(&lnp[0], th_get_pathname(t));
+	strcpy(&lnp[pathname_len], realname);
 #ifdef DEBUG
 	printf("tar_extract_file(): calling libtar_hash_add(): key=\"%s\", "
-	       "value=\"%s\"\n", pathname, realname);
+	       "value=\"%s\"\n", th_get_pathname(t), realname);
 #endif
-	free(pathname);
 	if (libtar_hash_add(t->h, lnp) != 0)
 		return -1;
 
@@ -292,7 +285,7 @@ tar_extract_hardlink(TAR * t, char *realname)
 {
 	char *filename;
 	char *linktgt = NULL;
-	linkname_t *lnp;
+	char *lnp;
 	libtar_hashptr_t hp;
 
 	if (!TH_ISLNK(t))
@@ -308,8 +301,8 @@ tar_extract_hardlink(TAR * t, char *realname)
 	if (libtar_hash_getkey(t->h, &hp, th_get_linkname(t),
 			       (libtar_matchfunc_t)libtar_str_match) != 0)
 	{
-		lnp = (linkname_t *)libtar_hashptr_data(&hp);
-		linktgt = lnp->ln_real;
+		lnp = (char *)libtar_hashptr_data(&hp);
+		linktgt = &lnp[strlen(lnp) + 1];
 	}
 	else
 		linktgt = th_get_linkname(t);

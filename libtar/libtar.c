@@ -17,9 +17,9 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <sys/param.h>
+#include <stdlib.h>
 
 #ifdef STDC_HEADERS
-# include <stdlib.h>
 # include <string.h>
 #endif
 

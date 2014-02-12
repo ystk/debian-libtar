@@ -9,11 +9,14 @@ exec_prefix	= @exec_prefix@
 bindir		= @bindir@
 libdir		= @libdir@
 includedir	= @includedir@
+datarootdir	= @datarootdir@
 
 PACKAGE_NAME	= @PACKAGE_NAME@
 PACKAGE_VERSION	= @PACKAGE_VERSION@
 
 @ENCAP_DEFS@
+
+SHELL           = @SHELL@
 
 ### Installation programs and flags
 INSTALL		= @INSTALL@

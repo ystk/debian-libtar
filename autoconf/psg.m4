@@ -187,7 +187,7 @@ dummy(void)
 # PSG_MODULE().
 AC_DEFUN([PSG_MODULE], [
   m4_define([subdir], [$1])dnl
-  m4_include([$1/module.ac])dnl
+  m4_include([$1]/module.ac)dnl
   m4_ifdef([$1][_INIT], [$1][_INIT($@)])dnl
   m4_undefine([subdir])dnl
 ])
