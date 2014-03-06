@@ -15,3 +15,4 @@
 
 #include <libtar.h>
 
+char* safer_name_suffix(char const*);

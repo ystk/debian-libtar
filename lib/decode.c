@@ -22,6 +22,36 @@
 #endif
 
 
+char *
+safer_name_suffix (char const *file_name)
+{
+	char const *p, *t;
+	p = t = file_name;
+	while (*p == '/') t = ++p;
+	while (*p)
+	{
+		while (p[0] == '.' && p[0] == p[1] && p[2] == '/')
+		{
+			p += 3;
+			t = p;
+		}
+		/* advance pointer past the next slash */
+		while (*p && (p++)[0] != '/');
+	}
+
+	if (!*t)
+	{
+		t = ".";
+	}
+
+	if (t != file_name)
+	{
+		/* TODO: warn somehow that the path was modified */
+	}
+	return (char*)t;
+}
+
+
 /* determine full path name */
 char *
 th_get_pathname(TAR *t)
@@ -29,17 +59,17 @@ th_get_pathname(TAR *t)
 	char filename[MAXPATHLEN];
 
 	if (t->th_buf.gnu_longname)
-		return t->th_buf.gnu_longname;
+		return safer_name_suffix(t->th_buf.gnu_longname);
 
 	if (t->th_buf.prefix[0] != '\0')
 	{
 		snprintf(filename, sizeof(filename), "%.155s/%.100s",
 			 t->th_buf.prefix, t->th_buf.name);
-		return strdup(filename);
+		return strdup(safer_name_suffix(filename));
 	}
 
 	snprintf(filename, sizeof(filename), "%.100s", t->th_buf.name);
-	return strdup(filename);
+	return strdup(safer_name_suffix(filename));
 }
 
 

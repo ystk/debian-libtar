@@ -1,3 +1,28 @@
+libtar (1.2.11-6+deb6u2) squeeze-security; urgency=low
+
+  * [SECURITY] CVE-2013-4420: Strip out leading slashes and any
+    pathname prefix containing ".." components (Closes: #731860). This is
+    done in th_get_pathname() (as well as to symlink targets when
+    extracting symlinks), not merely when extracting files, which means
+    applications calling that function will not see the stored
+    filename. There is no way to disable this behaviour, but it can be
+    expected that one will be provided when the issue is solved upstream.
+  * Make the th_get_size() macro cast the result from oct_to_int() to
+    unsigned int. This is the right fix for bug #725938 on 64-bit systems,
+    where a specially crafted tar file would not cause an integer
+    overflow, but a memory allocation of almost 16 exbibytes, which would
+    certainly fail outright without harm.
+
+ -- Magnus Holmgren <holmgren@debian.org>  Sun, 16 Feb 2014 19:44:16 +0100
+
+libtar (1.2.11-6+deb6u1) squeeze-security; urgency=high
+
+  * [SECURITY] Fix CVE-2013-4397: Integer overflow (Closes: #725938).
+    Patch from
+    http://repo.or.cz/w/libtar.git/commitdiff/45448e8bae671c2f7e80b860ae0fc0cedf2bdc04
+
+ -- Magnus Holmgren <holmgren@debian.org>  Thu, 10 Oct 2013 20:34:07 +0200
+
 libtar (1.2.11-6) unstable; urgency=low
 
   * Fix autotools usage (Closes: #511741)
