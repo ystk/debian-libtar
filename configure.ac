@@ -1,5 +1,5 @@
 dnl ### Normal initialization. ######################################
-AC_INIT([libtar], [1.2.16])
+AC_INIT([libtar], [1.2.20])
 AC_PREREQ([2.61])
 AC_CONFIG_AUX_DIR([autoconf])
 AC_CONFIG_HEADERS([config.h])
@@ -38,6 +38,15 @@ AC_PROG_MAKE_SET
 
 dnl ### Compiler characteristics. ##################################
 AC_C_CONST
+AX_TLS
+if test "$ac_cv_tls" = "none" ; then
+AC_MSG_NOTICE([
+****************************************************************
+WARNING: Your compiler does not support TLS __thread keywords,
+so your version of libtar will not be thread-safe.
+****************************************************************
+])
+fi
 
 
 dnl ### Checks for header files. ###################################

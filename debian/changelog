@@ -1,3 +1,65 @@
+libtar (1.2.20-4) unstable; urgency=high
+
+  * no_maxpathlen.patch: Half of the part of the patch modifying
+    compat/dirname.c was missing, causing libtar's dirname to always
+    return NULL (except in special circumstances). Actually make it work
+    (Closes: #745352). (The reason that libtar doesn't use libc's
+    dirname() and basename() on some or most platforms is that the code
+    doesn't work with destructive versions of these functions).
+
+ -- Magnus Holmgren <holmgren@debian.org>  Sat, 03 May 2014 20:39:02 +0200
+
+libtar (1.2.20-3) unstable; urgency=low
+
+  * no_maxpathlen.patch: Fix two grave bugs in the patch. First,
+    th_get_pathname would only allocate as much memory as was needed for
+    the first filename encountered, causing heap corruption when/if
+    encountering longer filenames later. Second, two variables were mixed
+    up in tar_append_tree(). Also, fix a potential memory leak and trim
+    the patch a bit.
+  * [SECURITY] CVE-2013-4420.patch: When the prefix field is in use, the
+    safer_name_suffix() function should certainly be applied to the
+    combination of it and the name field, not just on the name field.
+  * th_get_size-unsigned-int.patch: Make the th_get_size() macro cast the
+    result from oct_to_int() to unsigned int. This is the right fix for
+    bug #725938 on 64-bit systems, where a specially crafted tar file
+    would not cause an integer overflow, but a memory allocation of almost
+    16 exbibytes, which would certainly fail outright without harm.
+
+ -- Magnus Holmgren <holmgren@debian.org>  Sat, 15 Feb 2014 23:51:51 +0100
+
+libtar (1.2.20-2) unstable; urgency=low
+
+  * no_static_buffers.patch: avoid using a static buffer in
+    th_get_pathname(). Taken from upstream. Needed for no_maxpathlen.patch.
+  * no_maxpathlen.patch: Fix FTBFS on Hurd by dynamically allocating path
+    names (Closes: #657116). Thanks to Svante Signell and Petter
+    Reinholdtsen.
+  * [SECURITY] CVE-2013-4420.patch: Strip out leading slashes and any
+    pathname prefix containing ".." components (Closes: #731860). This is
+    done in th_get_pathname() (as well as to symlink targets when
+    extracting symlinks), not merely when extracting files, which means
+    applications calling that function will not see the stored
+    filename. There is no way to disable this behaviour, but it can be
+    expected that one will be provided when the issue is solved upstream.
+  * Bump Standards-Version to 3.9.5.
+
+ -- Magnus Holmgren <holmgren@debian.org>  Sat, 15 Feb 2014 21:49:37 +0100
+
+libtar (1.2.20-1) unstable; urgency=high
+
+  * [SECURITY] New upstream release. Fixes CVE-2013-4397: Integer
+    overflow (Closes: #725938).
+  * Bump Standards-Version to 3.9.4.
+
+ -- Magnus Holmgren <holmgren@debian.org>  Thu, 10 Oct 2013 19:20:49 +0200
+
+libtar (1.2.19-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Magnus Holmgren <holmgren@debian.org>  Sun, 05 May 2013 17:59:29 +0200
+
 libtar (1.2.16-1) unstable; urgency=low
 
   * New upstream: Chris Frey has stepped up with the consent of the

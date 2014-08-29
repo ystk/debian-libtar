@@ -27,8 +27,6 @@
 void
 th_finish(TAR *t)
 {
-	int i, sum = 0;
-
 	if (t->options & TAR_GNU)
 	{
 		/* we're aiming for this result, but must do it in
@@ -45,11 +43,7 @@ th_finish(TAR *t)
 		strncpy(t->th_buf.magic, TMAGIC, TMAGLEN);
 	}
 
-	for (i = 0; i < T_BLOCKSIZE; i++)
-		sum += ((char *)(&(t->th_buf)))[i];
-	for (i = 0; i < 8; i++)
-		sum += (' ' - t->th_buf.chksum[i]);
-	int_to_oct(sum, t->th_buf.chksum, 8);
+	int_to_oct(th_crc_calc(t), t->th_buf.chksum, 8);
 }
 
 
@@ -74,7 +68,7 @@ th_set_type(TAR *t, mode_t mode)
 
 /* encode file path */
 void
-th_set_path(TAR *t, char *pathname)
+th_set_path(TAR *t, const char *pathname)
 {
 	char suffix[2] = "";
 	char *tmp;
@@ -122,7 +116,7 @@ th_set_path(TAR *t, char *pathname)
 
 /* encode link path */
 void
-th_set_link(TAR *t, char *linkname)
+th_set_link(TAR *t, const char *linkname)
 {
 #ifdef DEBUG
 	printf("==> th_set_link(th, linkname=\"%s\")\n", linkname);
